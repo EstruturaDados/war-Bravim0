@@ -14,6 +14,7 @@ typedef struct {
 void cadastrarTerritorios(Territorio *mapa, int n);
 void exibirMapa(Territorio *mapa, int n);
 void batalhar(Territorio *mapa, int atacante, int defensor);
+int verificarVencedor(Territorio *mapa, int n);
 
 int main() {
     int n = 5;
@@ -28,10 +29,18 @@ int main() {
     printf("=== CADASTRO DE TERRITÓRIOS ===\n");
     cadastrarTerritorios(mapa, n);
 
-    int opcao;
+    int opcao = 1; // agora inicia corretamente
+
     do {
         printf("\n=== MAPA ATUAL ===\n");
         exibirMapa(mapa, n);
+
+        // Verificar se existe vencedor
+        if (verificarVencedor(mapa, n)) {
+            printf("\n🎉 O exército %s conquistou TODOS os territórios! FIM DE JOGO!\n",
+                   mapa[0].corExercito);
+            break;
+        }
 
         int atacante, defensor;
 
@@ -51,8 +60,17 @@ int main() {
 
         batalhar(mapa, atacante - 1, defensor - 1);
 
-        printf("\nAperte ENTER para continuar ou 0 para sair ");
-        getchar();
+        printf("\n=== TROPAS ATUALIZADAS ===\n");
+        exibirMapa(mapa, n);
+
+        printf("\nAperte ENTER para continuar ou digite 0 para sair: ");
+        getchar(); // limpa buffer
+        char entrada[10];
+        fgets(entrada, sizeof(entrada), stdin);
+
+        if (entrada[0] == '0') {
+            opcao = 0;
+        }
 
     } while (opcao != 0);
 
@@ -64,7 +82,6 @@ int main() {
 /* ---------- FUNÇÕES ---------- */
 
 void cadastrarTerritorios(Territorio *mapa, int n) {
-    getchar(); // limpa o \n deixado no buffer
     for (int i = 0; i < n; i++) {
         printf("\nTerritório %d:\n", i + 1);
         printf("Nome: ");
@@ -102,19 +119,31 @@ void batalhar(Territorio *mapa, int atacante, int defensor) {
     printf("Dado de Ataque: %d | Dado de Defesa: %d\n", dadoAtaque, dadoDefesa);
 
     if (dadoAtaque >= dadoDefesa) {
-        // atacante vence (empate favorece atacante)
         mapa[defensor].tropas--;
         printf("✅ %s venceu a rodada!\n", mapa[atacante].nome);
 
         if (mapa[defensor].tropas <= 0) {
             printf("🏴 %s foi conquistado por %s!\n",
                    mapa[defensor].nome, mapa[atacante].nome);
+
             strcpy(mapa[defensor].corExercito, mapa[atacante].corExercito);
             mapa[defensor].tropas = 1;
             mapa[atacante].tropas--;
         }
     } else {
         printf("🛡️ Defesa de %s resistiu!\n", mapa[defensor].nome);
-        mapa[atacante].tropas--; // atacante perde tropa
+        mapa[atacante].tropas--;
     }
+}
+
+int verificarVencedor(Territorio *mapa, int n) {
+    char cor[20];
+    strcpy(cor, mapa[0].corExercito);
+
+    for (int i = 1; i < n; i++) {
+        if (strcmp(mapa[i].corExercito, cor) != 0) {
+            return 0; // ainda existem cores diferentes
+        }
+    }
+    return 1; // vitória
 }

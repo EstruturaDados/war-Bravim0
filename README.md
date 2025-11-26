@@ -54,27 +54,27 @@ O usuário digita o nome do território, a cor do exército dominante e o númer
 - Cadastro dos territórios (como no Nível Novato)
 - Fase de ataque com:
   - Escolha de atacante e defensor
-  - Dados de ataque/defesa
-  - Lógica:
-    - Se atacante vence → defensor perde 1 tropa
-    - Se defensor perde todas → território é conquistado
-    - Empates favorecem o atacante
+    - Dados de ataque/defesa
+      - Lógica:
+          - Se atacante vence → defensor perde 1 tropa
+              - Se defensor perde todas → território é conquistado
+                  - Empates favorecem o atacante
 
-### 💡 Conceitos abordados
+                  ### 💡 Conceitos abordados
 
-- Ponteiros
-- `calloc` / `free`
-- Aleatoriedade com `rand()` / `srand()`
-- Funções para modularização
+                  - Ponteiros
+                  - `calloc` / `free`
+                  - Aleatoriedade com `rand()` / `srand()`
+                  - Funções para modularização
 
-### 📥 Entrada
+                  ### 📥 Entrada
 
-- Território **atacante** (1 a 5)
-- Território **defensor** (1 a 5)
+                  - Território **atacante** (1 a 5)
+                  - Território **defensor** (1 a 5)
 
-### 📤 Saída
+                  ### 📤 Saída
 
-Exibição do resultado da batalha, dados sorteados e mudanças no mapa.
+                  Exibição do resultado da batalha, dados sorteados e mudanças no mapa.
 
 
 
